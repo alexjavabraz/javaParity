@@ -31,7 +31,7 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "deltasp5k";
+	public static final String WALLET_PASSWORD = "";
 	
 	/*
     If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
@@ -41,7 +41,7 @@ public class UsingOnParity {
 
 	static final String WALLET1 = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
-	static final String WALLET2 = "0xC1F578a9F92623dd15C8d611C627819980aa1e97";
+	static final String WALLET2 = "0x0056dc647bAF0ad206622C8B70cc7CD2C2ede207";
 
 	private static final BigInteger ACCOUNT_UNLOCK_DURATION = BigInteger.valueOf(30);
     private static final int SLEEP_DURATION = 15000;
@@ -49,8 +49,8 @@ public class UsingOnParity {
     static final BigInteger GAS_PRICE = BigInteger.valueOf(20_000_000_000L);
     static final BigInteger GAS_LIMIT = BigInteger.valueOf(4_300_000);
     
-    private Web3j web3 = Web3j.build(new HttpService()); // defaults to
-	private Parity parity = Parity.build(new HttpService()); // defaults to
+    private Web3j web3    = Web3j.build(new HttpService());  // defaults to http://localhost:8545/
+	private Parity parity = Parity.build(new HttpService()); // defaults to http://localhost:8545/
 
     /**
      * 
@@ -159,15 +159,15 @@ public class UsingOnParity {
         return ethGetTransactionCount.getTransactionCount();
     }
 	
+//	EthAccounts accounts = parity.ethAccounts().send();
+//	List<String> contas  = accounts.getAccounts();
+	
 	/**
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	private boolean unlockAccount() throws Exception {
-		EthAccounts accounts = parity.ethAccounts().send();
-		List<String> contas  = accounts.getAccounts();
-		
         PersonalUnlockAccount personalUnlockAccount =
                 parity.personalUnlockAccount(
                 		WALLET1, WALLET_PASSWORD)
