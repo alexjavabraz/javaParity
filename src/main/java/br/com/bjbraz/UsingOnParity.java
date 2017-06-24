@@ -31,7 +31,7 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "";
+	public static final String WALLET_PASSWORD = "deltasp5k";
 	
 	/*
     If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
