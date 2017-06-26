@@ -31,7 +31,7 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "deltasp5k";
+	public static final String WALLET_PASSWORD = "trinity";
 	
 	/*
     If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
@@ -41,7 +41,7 @@ public class UsingOnParity {
 
 	static final String WALLET1 = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
-	static final String WALLET2 = "0x0056dc647bAF0ad206622C8B70cc7CD2C2ede207";
+	static final String WALLET2 = "0x0030f70e9bF83b4d6cE69476501f4E024D449f6A";
 
 	private static final BigInteger ACCOUNT_UNLOCK_DURATION = BigInteger.valueOf(30);
     private static final int SLEEP_DURATION = 15000;
