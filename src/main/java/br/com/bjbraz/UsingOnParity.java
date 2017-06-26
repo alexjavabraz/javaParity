@@ -31,7 +31,7 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "trinity";
+	public static final String WALLET_PASSWORD = "TRINITY";
 	
 	/*
     If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
@@ -39,9 +39,9 @@ public class UsingOnParity {
     WALLET address variable you've defined.
     */
 
-	static final String WALLET1 = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
+	static final String WALLET_ORIGEN = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
-	static final String WALLET2 = "0x0030f70e9bF83b4d6cE69476501f4E024D449f6A";
+	static final String WALLET_DESTINO = "0x0030f70e9bF83b4d6cE69476501f4E024D449f6A";
 
 	private static final BigInteger ACCOUNT_UNLOCK_DURATION = BigInteger.valueOf(30);
     private static final int SLEEP_DURATION = 15000;
@@ -70,11 +70,11 @@ public class UsingOnParity {
 		try{
 			unlockAccount();
 			
-	        BigInteger nonce = getNonce(WALLET1);
+	        BigInteger nonce = getNonce(WALLET_ORIGEN);
 	        BigInteger value = Convert.toWei("0.01", Convert.Unit.ETHER).toBigInteger();
 	
 	        Transaction transaction = Transaction.createEtherTransaction(
-	        		WALLET1, nonce, GAS_PRICE, GAS_LIMIT, WALLET2, value);
+	        		WALLET_ORIGEN, nonce, GAS_PRICE, GAS_LIMIT, WALLET_DESTINO, value);
 	
 	        EthSendTransaction ethSendTransaction =
 	                parity.ethSendTransaction(transaction).sendAsync().get();
@@ -170,7 +170,7 @@ public class UsingOnParity {
 	private boolean unlockAccount() throws Exception {
         PersonalUnlockAccount personalUnlockAccount =
                 parity.personalUnlockAccount(
-                		WALLET1, WALLET_PASSWORD)
+                		WALLET_ORIGEN, WALLET_PASSWORD)
                         .sendAsync().get();
         return personalUnlockAccount.accountUnlocked();
     }
