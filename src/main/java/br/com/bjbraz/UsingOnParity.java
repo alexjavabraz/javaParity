@@ -6,13 +6,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.EthAccounts;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.EthSendTransaction;
@@ -31,7 +31,7 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "TRINITY";
+	public static final String WALLET_PASSWORD = "suzuki";
 	
 	/*
     If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
@@ -41,7 +41,7 @@ public class UsingOnParity {
 
 	static final String WALLET_ORIGEN = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
-	static final String WALLET_DESTINO = "0x0030f70e9bF83b4d6cE69476501f4E024D449f6A";
+	static final String WALLET_DESTINO = "0x293012E3F5CE9562B1Fdd440c76c766cFfF3e1D4";
 
 	private static final BigInteger ACCOUNT_UNLOCK_DURATION = BigInteger.valueOf(30);
     private static final int SLEEP_DURATION = 15000;
@@ -52,7 +52,7 @@ public class UsingOnParity {
     private Web3j web3    = Web3j.build(new HttpService());  // defaults to http://localhost:8545/
 	private Parity parity = Parity.build(new HttpService()); // defaults to http://localhost:8545/
 
-    /**
+	/**
      * 
      * @param args
      */
@@ -60,6 +60,19 @@ public class UsingOnParity {
 		UsingOnParity o = new UsingOnParity();
 		o.start();
 		o.sendTest();
+	}
+	
+	private void callRegisterContract(){
+		
+		try{
+			Credentials credentials = WalletUtils.loadCredentials(WALLET_PASSWORD, "/path/to/walletfile");
+			
+			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", 
+					web3, credentials, GAS_PRICE, GAS_LIMIT);
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
