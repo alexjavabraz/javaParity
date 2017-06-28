@@ -1,5 +1,6 @@
 package br.com.bjbraz;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
@@ -21,6 +22,8 @@ import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.protocol.parity.Parity;
 import org.web3j.protocol.parity.methods.response.PersonalUnlockAccount;
+import org.web3j.tx.ClientTransactionManager;
+import org.web3j.tx.TransactionManager;
 import org.web3j.utils.Convert;
 
 /**
@@ -59,16 +62,25 @@ public class UsingOnParity {
 	public static void main(String[] args) {
 		UsingOnParity o = new UsingOnParity();
 		o.start();
-		o.sendTest();
+//		o.sendTest();
+		o.callRegisterContract();
 	}
 	
 	private void callRegisterContract(){
 		
 		try{
-			Credentials credentials = WalletUtils.loadCredentials(WALLET_PASSWORD, "/path/to/walletfile");
 			
-			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", 
-					web3, credentials, GAS_PRICE, GAS_LIMIT);
+			File json = new File(getClass().getClassLoader().getResource("accounts.json").getFile());
+//			Credentials credentials = WalletUtils.loadCredentials(WALLET_PASSWORD, json);
+			
+//			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", 
+//					web3, credentials, GAS_PRICE, GAS_LIMIT);
+			
+			TransactionManager transactionManager = new ClientTransactionManager(web3, WALLET_ORIGEN);
+			
+			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", web3, transactionManager, GAS_PRICE, GAS_LIMIT);
+			TransactionReceipt receipt = registro.itenQuantity().get();
+			System.out.println(receipt);
 		
 		}catch(Exception e){
 			e.printStackTrace();
