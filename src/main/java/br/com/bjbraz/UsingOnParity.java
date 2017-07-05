@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+import org.web3j.abi.datatypes.Utf8String;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
@@ -26,6 +27,8 @@ import org.web3j.tx.ClientTransactionManager;
 import org.web3j.tx.TransactionManager;
 import org.web3j.utils.Convert;
 
+import br.com.bjbraz.wrappers.ContratoAlex;
+
 /**
  * Using web3j in Parity
  * 
@@ -34,17 +37,11 @@ import org.web3j.utils.Convert;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "suzuki";
+	public static final String WALLET_PASSWORD = "deltasp5k";
 	
-	/*
-    If you want to use regular Ethereum wallet addresses, provide a WALLET address variable
-    "0x..." // 20 bytes (40 hex characters) & replace instances of ALICE.getAddress() with this
-    WALLET address variable you've defined.
-    */
-
 	static final String WALLET_ORIGEN = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
-	static final String WALLET_DESTINO = "0x293012E3F5CE9562B1Fdd440c76c766cFfF3e1D4";
+	static final String WALLET_DESTINO = "0xC1F578a9F92623dd15C8d611C627819980aa1e97";
 
 	private static final BigInteger ACCOUNT_UNLOCK_DURATION = BigInteger.valueOf(30);
     private static final int SLEEP_DURATION = 15000;
@@ -62,25 +59,24 @@ public class UsingOnParity {
 	public static void main(String[] args) {
 		UsingOnParity o = new UsingOnParity();
 		o.start();
-//		o.sendTest();
-		o.callRegisterContract();
+		o.callContract();
 	}
 	
-	private void callRegisterContract(){
+	/**
+	 * Método que faz a chamada do SmartContract, especificamente do método <u>changeMessage</u>, passando um objeto do tipo</br>
+	 * String para alterar o valor do campo lastMessage do Smart Contract. </br>
+	 * @since 05/07/2017
+	 */
+	private void callContract(){
 		
 		try{
 			
-			File json = new File(getClass().getClassLoader().getResource("accounts.json").getFile());
-//			Credentials credentials = WalletUtils.loadCredentials(WALLET_PASSWORD, json);
+			File accountFile = new File("/home/alexjavabraz/.local/share/io.parity.ethereum/keys/kovan/UTC--2017-05-23T22-31-59Z--f2a250aa-3694-0526-e8ef-8fd4aad864ae") ;
+			Credentials credentials = WalletUtils.loadCredentials(WALLET_PASSWORD, accountFile);
+
+			ContratoAlex contrato = ContratoAlex.load("0x1E386bF4Ed55ca0e4FA1F551f92b2ef8369Af774", web3, credentials, GAS_PRICE, GAS_LIMIT);
 			
-//			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", 
-//					web3, credentials, GAS_PRICE, GAS_LIMIT);
-			
-			TransactionManager transactionManager = new ClientTransactionManager(web3, WALLET_ORIGEN);
-			
-			Register registro = Register.load("0x19076364aD2FAAef6E168573083CC7121B599C02", web3, transactionManager, GAS_PRICE, GAS_LIMIT);
-			TransactionReceipt receipt = registro.itenQuantity().get();
-			System.out.println(receipt);
+			contrato.changeMessage(new Utf8String("Teste")).get();
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -100,6 +96,33 @@ public class UsingOnParity {
 	
 	        Transaction transaction = Transaction.createEtherTransaction(
 	        		WALLET_ORIGEN, nonce, GAS_PRICE, GAS_LIMIT, WALLET_DESTINO, value);
+	
+	        EthSendTransaction ethSendTransaction =
+	                parity.ethSendTransaction(transaction).sendAsync().get();
+	
+	        String transactionHash = ethSendTransaction.getTransactionHash();
+	
+	        TransactionReceipt transactionReceipt = waitForTransactionReceipt(transactionHash);
+	        System.out.println("Sucesso ! ");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void sendData() {
+
+		try{
+			unlockAccount();
+			
+	        BigInteger nonce = getNonce(WALLET_ORIGEN);
+	        BigInteger value = Convert.toWei("0.01", Convert.Unit.ETHER).toBigInteger();
+	
+	        Transaction transaction = null; //Transaction.createEtherTransaction(WALLET_ORIGEN, nonce, GAS_PRICE, GAS_LIMIT, WALLET_DESTINO, value);
+	        
+	        transaction = new Transaction(WALLET_ORIGEN, nonce, GAS_PRICE, GAS_LIMIT, WALLET_DESTINO, value, "CARAIO");
 	
 	        EthSendTransaction ethSendTransaction =
 	                parity.ethSendTransaction(transaction).sendAsync().get();

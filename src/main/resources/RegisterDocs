@@ -1,0 +1,42 @@
+pragma solidity ^0.4.11;
+/// @title AStar Document register.
+contract DocumentRegister{
+    address public owner;
+    uint public creationTime = now;
+    Document[] documents;
+    
+    
+    struct Document {
+        bytes32 data;
+        uint blockNumber;
+        address documentOwner;
+    }
+    function DocumentRegister() payable {
+        owner = msg.sender;
+    }
+    function register(bytes32 fileSha256) payable public {
+         documents.push(Document(fileSha256, block.number, msg.sender));
+    }
+    function getDocumentsByAddress(address documentOwner) constant returns (bytes32[] documentsResponse){
+        for (var i = 0; i < documents.length; i++) {
+            if(documents[i].documentOwner == documentOwner){
+                documentsResponse[documentsResponse.length] = (documents[i].data);
+            }
+        } 
+        return documentsResponse;
+    }
+    function getDocumentsByHash(bytes32 documentHash) constant returns (bytes32[] documentsResponse){
+        for (var i = 0; i < documents.length; i++) {
+            if(documents[i].data == documentHash){
+                documentsResponse[documentsResponse.length] = (documents[i].data);
+            }
+        } 
+        return documentsResponse;
+    }
+    
+    function destroy() { // so funds not locked in contract forever
+        if (msg.sender == owner) {
+          suicide(owner); // send funds to organizer
+        }
+    }
+}
