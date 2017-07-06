@@ -37,7 +37,7 @@ import br.com.bjbraz.wrappers.ContratoAlex;
  */
 public class UsingOnParity {
 	
-	public static final String WALLET_PASSWORD = "deltasp5k";
+	public static final String WALLET_PASSWORD = "suzuki";
 	
 	static final String WALLET_ORIGEN = "0x009761303A662654c87e3F9eca3Fe34cB851f662";
 
