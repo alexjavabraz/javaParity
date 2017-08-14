@@ -1,9 +1,7 @@
 package br.com.bjbraz;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 
 import org.web3j.abi.datatypes.DynamicBytes;
@@ -11,7 +9,6 @@ import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 
